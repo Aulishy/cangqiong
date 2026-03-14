@@ -8,12 +8,16 @@ import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.sky.dto.EmployeeDTO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +28,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
+@Api(tags = "员工相关接口")
 public class EmployeeController {
 
     @Autowired
@@ -38,6 +43,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/login")
+    @ApiOperation("员工管理接口")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
         log.info("员工登录：{}", employeeLoginDTO);
 
@@ -67,8 +73,22 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/logout")
+    @ApiOperation("员工退出登录接口")
     public Result<String> logout() {
         return Result.success();
     }
 
+    /**
+     * 新增员工
+     *
+     * @param employeeDTO
+     * @return
+     */
+    @PostMapping
+    @ApiOperation("新增员工接口")
+    public Result save(@RequestBody EmployeeDTO  employeeDTO){
+        log.info("新增员工，员工数据：{}", employeeDTO);//{}为占位符，括号里为参数
+        employeeService.save(employeeDTO);
+        return Result.success();
+    }
 }
